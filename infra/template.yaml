@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Financial Calculator API System
+
+Resources:
+  FinancialCalculatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/lambda/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Timeout: 10
+      MemorySize: 128
+      Events:
+        CalculateApi:
+          Type: Api
+          Properties:
+            Path: /calculate
+            Method: post
+
+Outputs:
+  CalculatorApiEndpoint:
+    Description: "API Gateway Target Endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/calculate"
